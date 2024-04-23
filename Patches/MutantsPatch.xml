@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+	<!--Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef/comps/li[@Class="CompProperties_Usable"]</xpath>
+		<value>
+			<allowedMutants>
+				<li>Ghoul</li>
+			</allowedMutants>
+		</value>
+	</Operation-->
+	<Operation Class="PatchOperationInsert">
+		<xpath>/Defs/ThinkTreeDef[defName="Ghoul"]/thinkRoot/subNodes/li[@Class="ThinkNode_Tagger"]</xpath>
+		<value>
+			<li Class="ThinkNode_ConditionalOfPlayerFaction">
+			  <subNodes>
+				<li Class="JobGiver_SeekAllowedArea" />
+				<li Class="JobGiver_SeekSafeTemperature" />
+				<li Class="JobGiver_DropUnusedInventory" />
+				<li Class="JobGiver_Work">
+				  <leaveJoinableLordIfIssuesJob>true</leaveJoinableLordIfIssuesJob>
+				  <emergency>true</emergency>
+				</li>
+				<li Class="JobGiver_PickupDroppedWeapon">
+				  <ignoreForbidden>true</ignoreForbidden>
+				</li>
+				<li Class="ThinkNode_Tagger">
+				  <tagToGive>TakeForInventoryStock</tagToGive>
+				  <subNodes>
+					<li Class="JobGiver_TakeForInventoryStock">
+					  <leaveJoinableLordIfIssuesJob>true</leaveJoinableLordIfIssuesJob>
+					</li>
+				  </subNodes>
+				</li>
+				<li Class="ThinkNode_Tagger">
+				  <tagToGive>UnloadingOwnInventory</tagToGive>
+				  <subNodes>
+					<li Class="JobGiver_UnloadYourInventory" />
+				  </subNodes>
+				</li>
+			  </subNodes>
+			</li>
+			<li Class="ThinkNode_ConditionalOfPlayerFaction">
+			  <subNodes>
+				<li Class="ThinkNode_PrioritySorter">
+				  <subNodes>
+					<li Class="JobGiver_TakeDrugsForDrugPolicy"/>
+					<li Class="JobGiver_MoveDrugsToInventory"/>
+					<li Class="JobGiver_GetNeuralSupercharge"/>
+					<li Class="JobGiver_Reload"/>
+					<li Class="JobGiver_Work"/>
+				  </subNodes>
+				</li>
+			  </subNodes>
+			</li>
+		</value>
+	</Operation>
+	<!--Operation Class="PatchOperationAdd">
+		<xpath>/Defs/MutantDef[defName="Ghoul"]</xpath>
+		<value>
+			<enabledWorkTypes>
+				<li>Firefighter</li>
+			</enabledWorkTypes>
+		</value>
+	</Operation-->
+</Patch>

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+	<!--Settings-->
+	<!--cn-->
+	<!--HumanlikeGhoul_Setting>Humanlike Ghoul Setting</HumanlikeGhoul_Setting-->
+	<HumanlikeGhoul_Setting>类人食尸鬼 设置</HumanlikeGhoul_Setting>
+	<!--HumanlikeGhoul_ResetWarring>Note: this will change WorkPage content also! Most config need reload save to get work</HumanlikeGhoul_ResetWarring-->
+	<HumanlikeGhoul_ResetWarring>注意: 重置按钮也会改变工作列表中的内容! 大多数设置需要重新载入存档以生效</HumanlikeGhoul_ResetWarring>
+	<HumanlikeGhoul_ResetNone>重置为基本</HumanlikeGhoul_ResetNone>
+	<HumanlikeGhoul_ResetNoneTooltip>Recommend to see what origin ghoul setting,most of mod feature will fail when this work</HumanlikeGhoul_ResetNoneTooltip>
+	<HumanlikeGhoul_ResetDefault>重置为默认</HumanlikeGhoul_ResetDefault>
+	<HumanlikeGhoul_ResetDefaultTooltip>Author using setting,ghoul can do easy work and use melee armor</HumanlikeGhoul_ResetDefaultTooltip>
+	<HumanlikeGhoul_ResetAdvance>重置为先进</HumanlikeGhoul_ResetAdvance>
+	<HumanlikeGhoul_ResetAdvanceTooltip>Ghoul can do most things,you can even made a colony of ghoul only</HumanlikeGhoul_ResetAdvanceTooltip>
+	<HumanlikeGhoul_Setting_MainPage>主要</HumanlikeGhoul_Setting_MainPage>
+	<HumanlikeGhoul_Setting_WorkPage>工作</HumanlikeGhoul_Setting_WorkPage>
+	<HumanlikeGhoul_Setting_StatsPage>属性</HumanlikeGhoul_Setting_StatsPage>
+	<HumanlikeGhoul_StatsPageInfo>注意:所有本界面的改动需要点击按钮来采用改动!</HumanlikeGhoul_StatsPageInfo>
+	<HumanlikeGhoul_AllowWorkType>允许工作类型</HumanlikeGhoul_AllowWorkType>
+	<HumanlikeGhoul_DisAllowWorkType>禁止工作类型</HumanlikeGhoul_DisAllowWorkType>
+	<HumanlikeGhoul_AddDisableWorkTab>禁止 </HumanlikeGhoul_AddDisableWorkTab>
+	<HumanlikeGhoul_RemoveDisableWorkTab>允许 </HumanlikeGhoul_RemoveDisableWorkTab>
+	<HuamnlikeGhoul_IdeoLimit>文化限制</HuamnlikeGhoul_IdeoLimit>
+	<HuamnlikeGhoul_IdeoLimitToolTip>设置是否允许食尸鬼拥有文化</HuamnlikeGhoul_IdeoLimitToolTip>
+	<HuamnlikeGhoul_EquipmentLimit>装备限制</HuamnlikeGhoul_EquipmentLimit>
+	<HuamnlikeGhoul_EquipmentLimitToolTip>设置食尸鬼能否穿戴装备(然而因为泰南的神秘代码只会影响生成的食尸鬼是否穿戴装备,作者之后会重做这一部分)</HuamnlikeGhoul_EquipmentLimitToolTip>
+	<HuamnlikeGhoul_GeneLimit>基因限制</HuamnlikeGhoul_GeneLimit>
+	<HuamnlikeGhoul_GeneLimitToolTip>如果设置为否 ,食尸鬼能够使用一些如血原化,死眠等原本被禁止的基因(基因能力需要通过调整能力限制设置生效)</HuamnlikeGhoul_GeneLimitToolTip>
+	<HuamnlikeGhoul_AblityLimit>能力限制</HuamnlikeGhoul_AblityLimit>
+	<HuamnlikeGhoul_AblityLimitToolTip>如果设置为否 ,食尸鬼能够使用大部分能力而不是只有原本的食尸鬼植入物的能力(需要重启游戏生效)</HuamnlikeGhoul_AblityLimitToolTip>
+	<HumanlikeGhoul_RenewDefButton>更新食尸鬼状态</HumanlikeGhoul_RenewDefButton>
+	<HumanlikeGhoul_HungryRateLable>最大饱食度</HumanlikeGhoul_HungryRateLable>
+	<HumanlikeGhoul_PsyRateLable>心灵敏感度</HumanlikeGhoul_PsyRateLable>
+</LanguageData>

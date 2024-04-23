@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Humanlike Ghoul</name>
+  <author>LH0609</author>
+  <supportedVersions>
+	<li>1.5</li>
+  </supportedVersions>
+  <packageId>Luapo.HumanLikeGhoul</packageId>
+  <description>This mod allow to adjust ghoul setting which made them aviable to wear equipments,use weapon,do work like what human do.
+  Safe to mid-join and mid-out,but the equipments will not unequip auto.
+  </description>
+
+</ModMetaData>

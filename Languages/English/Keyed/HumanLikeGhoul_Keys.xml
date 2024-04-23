@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+	<!--Settings-->
+	<HumanlikeGhoul_Setting>Humanlike Ghoul Setting</HumanlikeGhoul_Setting>
+	<HumanlikeGhoul_ResetWarring>Note: this will change WorkPage content also! Most config need reload save to get work</HumanlikeGhoul_ResetWarring>
+	<HumanlikeGhoul_ResetNone>Reset to Origin</HumanlikeGhoul_ResetNone>
+	<HumanlikeGhoul_ResetNoneTooltip>Recommend to see what origin ghoul setting,most of mod feature will fail when this work</HumanlikeGhoul_ResetNoneTooltip>
+	<HumanlikeGhoul_ResetDefault>Reset to Default</HumanlikeGhoul_ResetDefault>
+	<HumanlikeGhoul_ResetDefaultTooltip>Author using setting,ghoul can do easy work and use melee armor</HumanlikeGhoul_ResetDefaultTooltip>
+	<HumanlikeGhoul_ResetAdvance>Reset to Advance</HumanlikeGhoul_ResetAdvance>
+	<HumanlikeGhoul_ResetAdvanceTooltip>Ghoul can do most things,you can even made a colony of ghoul only</HumanlikeGhoul_ResetAdvanceTooltip>
+	<HumanlikeGhoul_Setting_MainPage>Main</HumanlikeGhoul_Setting_MainPage>
+	<HumanlikeGhoul_Setting_WorkPage>Work</HumanlikeGhoul_Setting_WorkPage>
+	<HumanlikeGhoul_Setting_StatsPage>Stats</HumanlikeGhoul_Setting_StatsPage>
+	<HumanlikeGhoul_StatsPageInfo>Note:All change this page should click button to affect game!</HumanlikeGhoul_StatsPageInfo>
+	<HumanlikeGhoul_AllowWorkType>Allow work tags</HumanlikeGhoul_AllowWorkType>
+	<HumanlikeGhoul_DisAllowWorkType>Disable work tags</HumanlikeGhoul_DisAllowWorkType>
+	<HumanlikeGhoul_AddDisableWorkTab>Disable </HumanlikeGhoul_AddDisableWorkTab>
+	<HumanlikeGhoul_RemoveDisableWorkTab>Alow </HumanlikeGhoul_RemoveDisableWorkTab>
+	<HuamnlikeGhoul_IdeoLimit>Ideo Limit</HuamnlikeGhoul_IdeoLimit>
+	<HuamnlikeGhoul_IdeoLimitToolTip>Set whether ghoul can have ideo</HuamnlikeGhoul_IdeoLimitToolTip>
+	<HuamnlikeGhoul_EquipmentLimit>Equipment Limit</HuamnlikeGhoul_EquipmentLimit>
+	<HuamnlikeGhoul_EquipmentLimitToolTip>Set whether ghoul can use Equipment(However,due to origin code,just inflect ghoul spawn,i will remake it latter)</HuamnlikeGhoul_EquipmentLimitToolTip>
+	<HuamnlikeGhoul_GeneLimit>Gene Limit</HuamnlikeGhoul_GeneLimit>
+	<HuamnlikeGhoul_GeneLimitToolTip>If set not ,ghoul can use some banned Gene etc blood gene(the gene ablity should goto ablity limit set)</HuamnlikeGhoul_GeneLimitToolTip>
+	<HuamnlikeGhoul_AblityLimit>Ablity Limit</HuamnlikeGhoul_AblityLimit>
+	<HuamnlikeGhoul_AblityLimitToolTip>If set not ,ghoul can use other ablity rather only ghoul prosthetics ablities(need restart the game)</HuamnlikeGhoul_AblityLimitToolTip>
+	<HumanlikeGhoul_RenewDefButton>renew Ghoul hediff</HumanlikeGhoul_RenewDefButton>
+	<HumanlikeGhoul_HungryRateLable>Max nurtion</HumanlikeGhoul_HungryRateLable>
+	<HumanlikeGhoul_PsyRateLable>Psychic sensitivity</HumanlikeGhoul_PsyRateLable>
+</LanguageData>
