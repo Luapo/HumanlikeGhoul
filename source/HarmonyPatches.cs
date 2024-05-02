@@ -21,6 +21,7 @@ using System.Net;
 using NAudio.CoreAudioApi;
 using Verse.AI.Group;
 using static RimWorld.PsychicRitualRoleDef;
+using System.Security.Cryptography;
 
 namespace GhoulWorkAble
 {
@@ -29,18 +30,22 @@ namespace GhoulWorkAble
     {
         public static bool changeDef = false;
         public static String GhoulDefName = "Ghoul";
+        public static int TickNum = 0;
         private static GhoulWorkAbleSettings Settings= LoadedModManager.GetMod<GhoulWorkAbleMod>().GetSettings<GhoulWorkAbleSettings>();
         static HarmonyPatches()
         {
             var harmony = new Harmony("Luapo.ghoulWorkAble");
+            // need to move to other 
             //change ghoul def
             // may cause peformance problem.
-            harmony.Patch(original: AccessTools.PropertyGetter(typeof(Pawn_MutantTracker), nameof(Pawn_MutantTracker.Def)),
-               postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_MutantTrackerDef_PostFix)));
+            // new Type[]{ typeof(Pawn), typeof(MutantDef), typeof(RotStage) }
+            harmony.Patch(original: AccessTools.Method(typeof(Pawn), nameof(Pawn.GetDisabledWorkTypes)),
+               prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_MutantTrackerDef_PreFix)));
             //AI work
             // not recommender reuse
             harmony.Patch(original: AccessTools.Method(typeof(Pawn_JobTracker), nameof(Pawn_JobTracker.CanPawnTakeOpportunisticJob)),
                 transpiler: new HarmonyMethod(typeof(HarmonyPatches), nameof(PawnNotAssignableReason_Transpiler)));
+            Verse.Log.Message("Try to find" + AccessTools.Method(typeof(Pawn_JobTracker), nameof(Pawn_JobTracker.CanPawnTakeOpportunisticJob)));
             // adjust worktable 
             harmony.Patch(original: AccessTools.PropertyGetter(typeof(MainTabWindow_Work), nameof(MainTabWindow_Work.Pawns)),
               postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(MainTabWindow_Work_pawns_PostFix)));
@@ -50,6 +55,7 @@ namespace GhoulWorkAble
             // adjust pawn gear 
             harmony.Patch(original: AccessTools.PropertyGetter(typeof(ITab_Pawn_Gear), nameof(ITab_Pawn_Gear.CanControlColonist)),
             postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CanControlColonist_PostFix)));
+            // from carvan ghouls
             harmony.Patch(original: AccessTools.Method(typeof(MassUtility), nameof(MassUtility.CanEverCarryAnything)),
             transpiler: new HarmonyMethod(typeof(HarmonyPatches), nameof(CanEverCarryAnything_Transpiler)));
             //adjust psychitRitual  and they will still can't use due to them psychit is 0
@@ -139,40 +145,17 @@ namespace GhoulWorkAble
         {
             return method.IsStatic && method.Name == nameof(RitualRoleAssignments.PawnNotAssignableReason);
         }
-        static void Pawn_MutantTrackerDef_PostFix(ref MutantDef __result)
-        {
+        static void Pawn_MutantTrackerDef_PreFix(Pawn __instance){
             // only change ghoul
-            if (__result.defName != GhoulDefName) return;
-            //work
-            if (!changeDef)
-            {
-                changeDef = true;
-                Settings.notifyHediffDefChange();
-            }
-            __result.disabledWorkTags = Settings.disableWorkTags;
-            __result.enabledWorkTypes = GhoulWorkAbleSettings.getEnableWorkTypes(Settings.disableWorkTags);
-            //DefGenerator
-            //__result.enabledWorkTypes = Settings.enabledWorkTypes;
-            // ideo and etc 
-            if (!Settings.geneLimit){
-                __result.disablesGenes.Clear();
-            }
-            if (!Settings.geneLimit)
-            {
-                //__result.drugWhitelist=DefMap<Thing>.
-            }
-            if (!Settings.ablityLimit)
-            {
-                __result.abilityWhitelist = DefDatabase<AbilityDef>.defsList;
-            }
-            __result.removeIdeo = !Settings.allowIdeo;
-            //equiments
-            //__result.disablesGenes = Settings.geneLimit;
-            //can wear equipment
-            __result.canWearApparel = Settings.allowEquipment;
-            // available work type
+            if (__instance.mutant?.def?.defName!= GhoulDefName) return;
+            TickNum += 1;
+            if (changeDef&&TickNum<=10000) return;
+            TickNum = 0;
+            changeDef = true;
+            Settings.notifyHediffDefChange();
+            Settings.notifyMutantDefChange();
         }
-        //need be rewrite
+        //need be move to somewhere for auto load
 
         static IEnumerable<CodeInstruction> DrawPawnRoleSelection_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
@@ -289,6 +272,30 @@ namespace GhoulWorkAble
             {
                 //Verse.Log.Message("GhoulWorkAble is running now. add ghoul allow");
                 __instance.Props.allowedMutants.Add(p.mutant.Def);
+            }
+        }
+        private static IEnumerable<CodeInstruction> CanEverCarryAnything_Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            bool found = false;
+            MethodInfo targetMethod = AccessTools.PropertyGetter(typeof(Pawn), "IsMutant");
+            if (targetMethod == null)
+            {
+                Log.Message("Failed to reflect carry weight." + Environment.StackTrace);
+            }
+            foreach (CodeInstruction instruction in instructions)
+            {
+                yield return instruction;
+                if (targetMethod != null && !found && CodeInstructionExtensions.Calls(instruction, targetMethod))
+                {
+                    found = true;
+                    //replace by false
+                    yield return new CodeInstruction(OpCodes.Pop);
+                    yield return new CodeInstruction(OpCodes.Ldc_I4_0);
+                }
+            }
+            if (!found)
+            {
+                Log.Message("Failed to reflect carry weight." + Environment.StackTrace);
             }
         }
     }

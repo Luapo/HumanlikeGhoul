@@ -34,6 +34,7 @@ namespace GhoulWorkAble
                 if (leftListenr.ButtonText("HumanlikeGhoul_AddDisableWorkTab".Translate() + defName.Translate()))
                 {
                     _settings.changeWorkTag(workTag);
+                    _settings.notifyAllDefChange();
                 }
                 leftListenr.Gap(1f);
             }
@@ -51,6 +52,7 @@ namespace GhoulWorkAble
                 if (rightListener.ButtonText("HumanlikeGhoul_RemoveDisableWorkTab".Translate() + defName.Translate()))
                 {
                     _settings.changeWorkTag(workTag);
+                    _settings.notifyAllDefChange();
                 }
                 rightListener.Gap(1f);
             }
@@ -94,7 +96,7 @@ namespace GhoulWorkAble
             _settings.hungryRatePercent = Widgets.HorizontalSlider(inRect with { x = inRect.width / 4, width = inRect.width / 4 * 3, y = inRect.y + 60, height = 24 }, _settings.hungryRatePercent, 0.5f, 4f, true, $"{_settings.hungryRatePercent * 100f}%", "50%", "400%", 0.1f);
             if(Widgets.ButtonText(inRect with { y = inRect.y + 90, height = 36 }, "HumanlikeGhoul_RenewDefButton".Translate()))
             {
-                _settings.notifyHediffDefChange();
+                _settings.notifyAllDefChange();
             }
         }
         public void DoSelectPage(Rect inRect,int index)

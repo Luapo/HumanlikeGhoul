@@ -55,6 +55,11 @@ namespace GhoulWorkAble
             Scribe_Values.Look(ref PsyRate, nameof(PsyRate), PsyRatePreset[1]);
             Scribe_Values.Look(ref geneLimit, nameof(geneLimit), GeneLimitPreset[1]);
         }
+        public void notifyAllDefChange()
+        {
+            notifyMutantDefChange();
+            notifyHediffDefChange();
+        }
         public void notifyHediffDefChange()
         {
             var def = DefDatabase<HediffDef>.GetNamed(GhoulDefName);
@@ -71,6 +76,37 @@ namespace GhoulWorkAble
                     if (statModifier.stat.defName == "PsychicSensitivity") statModifier.value = PsyRate;
                 }
             }
+        }
+        public void notifyMutantDefChange()
+        {
+            var def = DefDatabase<MutantDef>.GetNamed(GhoulDefName);
+            if (def == null)
+            {
+                Verse.Log.Message("Ghoul work fail to change def");
+                return;
+            }
+            //work
+            def.disabledWorkTags = disableWorkTags;
+            def.enabledWorkTypes = GhoulWorkAbleSettings.getEnableWorkTypes(disableWorkTags);
+            // ideo and etc 
+            if (!geneLimit)
+            {
+                def.disablesGenes.Clear();
+            }
+            if (!geneLimit)
+            {
+                //__result.drugWhitelist=DefMap<Thing>.
+            }
+            if (!ablityLimit)
+            {
+                def.abilityWhitelist = DefDatabase<AbilityDef>.defsList;
+            }
+            def.removeIdeo = !allowIdeo;
+            //equiments
+            //__result.disablesGenes = Settings.geneLimit;
+            //can wear equipment
+            def.canWearApparel = allowEquipment;
+            // available work type
         }
         public static List<Verse.WorkTypeDef> getEnableWorkTypes(WorkTags workTag)
         {
@@ -96,7 +132,7 @@ namespace GhoulWorkAble
             foodLimit = FoodLimitPreset[index];
             PsyRate = PsyRatePreset[index];
             hungryRatePercent = defaultMaxHungryPercent;
-            notifyHediffDefChange();
+            notifyAllDefChange();
         }
         public void changeWorkTag(WorkTags workTag)
         {
