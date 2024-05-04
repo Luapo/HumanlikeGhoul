@@ -22,6 +22,8 @@ using NAudio.CoreAudioApi;
 using Verse.AI.Group;
 using static RimWorld.PsychicRitualRoleDef;
 using System.Security.Cryptography;
+using static Mono.Security.X509.X520;
+using System.Net.NetworkInformation;
 
 namespace GhoulWorkAble
 {
@@ -45,19 +47,47 @@ namespace GhoulWorkAble
             // not recommender reuse
             harmony.Patch(original: AccessTools.Method(typeof(Pawn_JobTracker), nameof(Pawn_JobTracker.CanPawnTakeOpportunisticJob)),
                 transpiler: new HarmonyMethod(typeof(HarmonyPatches), nameof(PawnNotAssignableReason_Transpiler)));
-            Verse.Log.Message("Try to find" + AccessTools.Method(typeof(Pawn_JobTracker), nameof(Pawn_JobTracker.CanPawnTakeOpportunisticJob)));
-            // adjust worktable 
+            // adjust pawntable 
             harmony.Patch(original: AccessTools.PropertyGetter(typeof(MainTabWindow_Work), nameof(MainTabWindow_Work.Pawns)),
               postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(MainTabWindow_Work_pawns_PostFix)));
+            harmony.Patch(original: AccessTools.PropertyGetter(typeof(MainTabWindow_Assign), nameof(MainTabWindow_Assign.Pawns)),
+            postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(MainTabWindow_Work_pawns_PostFix)));
+            harmony.Patch(original: AccessTools.PropertyGetter(typeof(Pawn_OutfitTracker), nameof(Pawn_OutfitTracker.CurrentApparelPolicy)),
+            transpiler: new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_Tracker_Transpiler)));
+            harmony.Patch(original: AccessTools.PropertyGetter(typeof(Pawn_DrugPolicyTracker), nameof(Pawn_DrugPolicyTracker.CurrentPolicy)),
+            transpiler: new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_Tracker_Transpiler)));
+            harmony.Patch(original: AccessTools.PropertyGetter(typeof(Pawn_FoodRestrictionTracker), nameof(Pawn_FoodRestrictionTracker.CurrentFoodPolicy)),
+            transpiler: new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_Tracker_Transpiler)));
+            harmony.Patch(original: AccessTools.PropertyGetter(typeof(Pawn_ReadingTracker), nameof(Pawn_ReadingTracker.CurrentPolicy)),
+            transpiler: new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_Tracker_Transpiler)));
             // add aviliable order
             harmony.Patch(original: AccessTools.Method(typeof(FloatMenuMakerMap), nameof(FloatMenuMakerMap.AddMutantOrders)),
                prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(AddMutantOrders_PreFix)));
+            // remove humanorder food option
+            //harmony.Patch(original: AccessTools.Method(typeof(RaceProperties), nameof(RaceProperties.CanEverEat),new Type[] { typeof(ThingDef) }),
+            //prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(AddMutantOrders_PreFix)));
             // adjust pawn gear 
+            /*
+            if (ModsConfig.ActiveModsInLoadOrder.Any(m=>m.Name== "RPG Style Invent"||m.Name== "RPG Style Inventory Revamped"))
+            {
+                String packageName = "Sandy_Detailed_RPG_Inventory";
+                String typeName = "Sandy_Detailed_RPG_GearTab";
+                String priorityName = "CanControlColonist";
+                Type Sandy_Detailed_RPG_GearTab = GenTypes.GetTypeInAnyAssembly("Sandy_Detailed_RPG_Inventory.Sandy_Detailed_RPG_GearTab");
+                Verse.Log.Message("Try to get"+Sandy_Detailed_RPG_GearTab);
+                harmony.Patch(original:Sandy_Detailed_RPG_GearTab.GetProperty("Sandy_Detailed_RPG_Inventory.Sandy_Detailed_RPG_GearTab.CanControlColonist", AccessTools.all).GetGetMethod(),
+                postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CanControlColonist_PostFix)));
+            }
+            */
+            harmony.Patch(original: AccessTools.FirstMethod(typeof(EquipmentUtility), CanEquip_Search),
+            postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CanEquip_PostFix)));
+
             harmony.Patch(original: AccessTools.PropertyGetter(typeof(ITab_Pawn_Gear), nameof(ITab_Pawn_Gear.CanControlColonist)),
             postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CanControlColonist_PostFix)));
             // from carvan ghouls
             harmony.Patch(original: AccessTools.Method(typeof(MassUtility), nameof(MassUtility.CanEverCarryAnything)),
             transpiler: new HarmonyMethod(typeof(HarmonyPatches), nameof(CanEverCarryAnything_Transpiler)));
+
             //adjust psychitRitual  and they will still can't use due to them psychit is 0
             harmony.Patch(original: AccessTools.PropertyGetter(typeof(PsychicRitualCandidatePool), nameof(PsychicRitualCandidatePool.AllCandidatePawns)),
             postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(PsychicRitualCandidatePool_AllCandidatePawns_Postfix)));
@@ -83,6 +113,61 @@ namespace GhoulWorkAble
                 transpiler: new HarmonyMethod(typeof(HarmonyPatches), nameof(Precept_Role_ValidatePawn_Transpiler)));
             }
             Verse.Log.Message("GhoulWorkAble is running now.");
+        }
+        static IEnumerable<CodeInstruction> AddHumanOrderFood_Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            /*
+             * 	    IL_0388: dup
+				    IL_0389: brtrue.s IL_038f
+				    IL_038b: pop
+				    IL_038c: ldnull
+				    IL_038d: br.s IL_0394
+                    IL_038f: ldfld class RimWorld.Need_Food RimWorld.Pawn_NeedsTracker::food
+                    IL_0394: brfalse IL_0865
+             */
+            // (RimWorld.Need_Food||IsMutant)
+            var found = false;
+            CodeInstruction prevInstruction = null;
+            var targetMethod = AccessTools.PropertyGetter(typeof(Pawn), nameof(Pawn_NeedsTracker.food));
+            if (targetMethod == null)
+            {
+                Verse.Log.Message("GhoulWorkAble failed to reflect ideo method." + Environment.StackTrace);
+            }
+            foreach (var instruction in instructions)
+            {
+                if (targetMethod != null
+                    && instruction.Calls(targetMethod))
+                {
+                    //Verse.Log.Message("found " + instruction);
+                    //put the pawn address backup
+                    yield return new CodeInstruction(OpCodes.Dup);
+                    yield return instruction;
+                    yield return prevInstruction;
+                    // get is Colony Mutant
+                    yield return new CodeInstruction(OpCodes.Callvirt,
+                        AccessTools.PropertyGetter(typeof(Pawn), nameof(Pawn.IsColonyMutantPlayerControlled)));
+                    // out result
+                    yield return new CodeInstruction(OpCodes.Or);
+                    found = true;
+                }
+                else yield return instruction;
+                prevInstruction = instruction;
+            }
+            if (found is false)
+                Verse.Log.Message("GhoulWorkAble failed to reflect ideo role." + Environment.StackTrace);
+        }
+        static bool CanEquip_Search(MethodInfo method)
+        {
+            return method.IsStatic && method.Name == nameof(EquipmentUtility.CanEquip)&&method.GetParameters().Length>=3;
+        }
+        static void CanEquip_PostFix(ref bool __result, Pawn pawn,ref string cantReason)
+        {
+            Verse.Log.Message("try find pawn wear");
+            if (__result && pawn.IsColonyMutantPlayerControlled&&!Settings.allowEquipment)
+            {
+                cantReason = "HumanLikeGhoul_CantWearCause".Translate();
+                __result = false;
+            }
         }
         static IEnumerable<CodeInstruction> Precept_Role_ValidatePawn_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
@@ -195,6 +280,50 @@ namespace GhoulWorkAble
                 }
                 else yield return instruction;
                 prevInstruction = instruction;
+            }
+            if (found is false)
+                Verse.Log.Message("GhoulWorkAble failed to reflect ideo role." + Environment.StackTrace);
+        }
+        static IEnumerable<CodeInstruction> Pawn_Tracker_Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            /*
+		        IL_0000: ldarg.0
+		        IL_0001: ldfld class Verse.Pawn RimWorld.Pawn_OutfitTracker::pawn
+		        IL_0006: callvirt instance bool Verse.Pawn::get_IsMutant()
+		        IL_000b: brfalse.s IL_000f
+             */
+            var found = false;
+            var targetMethod = AccessTools.PropertyGetter(typeof(Pawn), nameof(Pawn.IsMutant));
+            Stack<CodeInstruction> prevInstruction = new Stack<CodeInstruction> { };
+            if (targetMethod == null)
+            {
+                Verse.Log.Message("GhoulWorkAble failed to reflect ideo method." + Environment.StackTrace);
+            }
+            foreach (var instruction in instructions)
+            {
+                if (targetMethod != null
+                    && instruction.Calls(targetMethod))
+                {
+                    // if (is mutant & ! is player ColonyMutantPlayerControlled)
+                    //Verse.Log.Message("found " + instruction);
+                    CodeInstruction tp = prevInstruction.Pop();
+                    yield return instruction;
+                    yield return prevInstruction.Pop();
+                    yield return tp;
+                    yield return new CodeInstruction(OpCodes.Callvirt,
+                        AccessTools.PropertyGetter(typeof(Pawn), nameof(Pawn.IsColonyMutantPlayerControlled)));
+                    yield return new CodeInstruction(OpCodes.Ldc_I4_1);
+                    yield return new CodeInstruction(OpCodes.Xor);
+                    yield return new CodeInstruction(OpCodes.And);
+                    // out result
+                    found = true;
+                }
+                else yield return instruction;
+                prevInstruction.Push(instruction);
+                if (prevInstruction.Count >= 3)
+                {
+                    prevInstruction.Pop();
+                }
             }
             if (found is false)
                 Verse.Log.Message("GhoulWorkAble failed to reflect ideo role." + Environment.StackTrace);

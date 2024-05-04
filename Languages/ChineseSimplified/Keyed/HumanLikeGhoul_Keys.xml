@@ -23,7 +23,8 @@
 	<HuamnlikeGhoul_IdeoLimit>文化限制</HuamnlikeGhoul_IdeoLimit>
 	<HuamnlikeGhoul_IdeoLimitToolTip>设置是否允许食尸鬼拥有文化</HuamnlikeGhoul_IdeoLimitToolTip>
 	<HuamnlikeGhoul_EquipmentLimit>装备限制</HuamnlikeGhoul_EquipmentLimit>
-	<HuamnlikeGhoul_EquipmentLimitToolTip>设置食尸鬼能否穿戴装备(然而因为泰南的神秘代码只会影响生成的食尸鬼是否穿戴装备,作者之后会重做这一部分)</HuamnlikeGhoul_EquipmentLimitToolTip>
+	<HuamnlikeGhoul_EquipmentLimitToolTip>如果设置为真,则食尸鬼能够穿戴装备</HuamnlikeGhoul_EquipmentLimitToolTip>
+	<HumanLikeGhoul_CantWearCause>食尸鬼不能穿戴装备</HumanLikeGhoul_CantWearCause>
 	<HuamnlikeGhoul_GeneLimit>基因限制</HuamnlikeGhoul_GeneLimit>
 	<HuamnlikeGhoul_GeneLimitToolTip>如果设置为否 ,食尸鬼能够使用一些如血原化,死眠等原本被禁止的基因(基因能力需要通过调整能力限制设置生效)</HuamnlikeGhoul_GeneLimitToolTip>
 	<HuamnlikeGhoul_AblityLimit>能力限制</HuamnlikeGhoul_AblityLimit>

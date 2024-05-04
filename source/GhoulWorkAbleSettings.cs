@@ -18,7 +18,7 @@ namespace GhoulWorkAble
         public static List<float> PsyRatePreset = new List<float> {0f,0f,0.1f };
         // useless stat,mainly for test
         public static float defaultMaxHungryPercent = 2f;
-        public static List<bool> AllowEquipmentPreset = new List<bool> { false, true, true };
+        public static List<bool> AllowEquipmentPreset = new List<bool> { false, false, true };
         public static List<bool> AllowIdeoPreset = new List<bool> { false, false, true };
         public static List<bool> AblityLimitPreset = new List<bool> { true, true, false };
         public static List<bool> GeneLimitPreset = new List<bool> { true, true, false };
@@ -86,8 +86,8 @@ namespace GhoulWorkAble
                 return;
             }
             //work
-            def.disabledWorkTags = disableWorkTags;
-            def.enabledWorkTypes = GhoulWorkAbleSettings.getEnableWorkTypes(disableWorkTags);
+            def.workDisables = disableWorkTags;
+            def.cachedDisabledWorkTypes = getEnableWorkTypes(disableWorkTags);
             // ideo and etc 
             if (!geneLimit)
             {
@@ -99,7 +99,7 @@ namespace GhoulWorkAble
             }
             if (!ablityLimit)
             {
-                def.abilityWhitelist = DefDatabase<AbilityDef>.defsList;
+                def.abilityWhitelist = DefDatabase<AbilityDef>.AllDefsListForReading;
             }
             def.removeIdeo = !allowIdeo;
             //equiments
@@ -114,7 +114,7 @@ namespace GhoulWorkAble
             List<Verse.WorkTypeDef> WorkTypelist = DefDatabase<WorkTypeDef>.AllDefsListForReading;
             foreach (Verse.WorkTypeDef work in WorkTypelist)
             {
-                if ((workTag & work.workTags) == 0)
+                if ((workTag & work.workTags) != 0)
                 {
                     result.Add(work);
                 }

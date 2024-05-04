@@ -31,7 +31,7 @@ namespace GhoulWorkAble
                 if ((_settings.disableWorkTags & workTag) == workTag) continue;
                 String name = Enum.GetName(typeof(WorkTags), workTag);
                 String defName = "WorkTag" + name;
-                if (leftListenr.ButtonText("HumanlikeGhoul_AddDisableWorkTab".Translate() + defName.Translate()))
+                if (leftListenr.ButtonText(defName.Translate()))
                 {
                     _settings.changeWorkTag(workTag);
                     _settings.notifyAllDefChange();
@@ -49,7 +49,8 @@ namespace GhoulWorkAble
                 if ((_settings.disableWorkTags & workTag) != workTag) continue;
                 String name = Enum.GetName(typeof(WorkTags), workTag);
                 String defName = "WorkTag" + name;
-                if (rightListener.ButtonText("HumanlikeGhoul_RemoveDisableWorkTab".Translate() + defName.Translate()))
+                //"HumanlikeGhoul_RemoveDisableWorkTab".Translate() +
+                if (rightListener.ButtonText(defName.Translate()))
                 {
                     _settings.changeWorkTag(workTag);
                     _settings.notifyAllDefChange();

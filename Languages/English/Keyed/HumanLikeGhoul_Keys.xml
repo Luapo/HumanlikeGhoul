@@ -20,7 +20,8 @@
 	<HuamnlikeGhoul_IdeoLimit>Ideo Limit</HuamnlikeGhoul_IdeoLimit>
 	<HuamnlikeGhoul_IdeoLimitToolTip>Set whether ghoul can have ideo</HuamnlikeGhoul_IdeoLimitToolTip>
 	<HuamnlikeGhoul_EquipmentLimit>Equipment Limit</HuamnlikeGhoul_EquipmentLimit>
-	<HuamnlikeGhoul_EquipmentLimitToolTip>Set whether ghoul can use Equipment(However,due to origin code,just inflect ghoul spawn,i will remake it latter)</HuamnlikeGhoul_EquipmentLimitToolTip>
+	<HumanLikeGhoul_CantWearCause>Ghoul can't wear gear</HumanLikeGhoul_CantWearCause>
+	<HuamnlikeGhoul_EquipmentLimitToolTip>If set true,ghoul can use Equipment</HuamnlikeGhoul_EquipmentLimitToolTip>
 	<HuamnlikeGhoul_GeneLimit>Gene Limit</HuamnlikeGhoul_GeneLimit>
 	<HuamnlikeGhoul_GeneLimitToolTip>If set not ,ghoul can use some banned Gene etc blood gene(the gene ablity should goto ablity limit set)</HuamnlikeGhoul_GeneLimitToolTip>
 	<HuamnlikeGhoul_AblityLimit>Ablity Limit</HuamnlikeGhoul_AblityLimit>
