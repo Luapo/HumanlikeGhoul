@@ -15,6 +15,7 @@ namespace GhoulWorkAble
         //1:can do easy work and use meal weapon and wear armor,smarter ghoul
         //2:can do most work human can do,the advance choice;
         public static string GhoulDefName="Ghoul";
+        public static string HumanDefName = "Human";
         public static List<float> PsyRatePreset = new List<float> {0f,0f,0.1f };
         // useless stat,mainly for test
         public static float defaultMaxHungryPercent = 2f;
@@ -24,7 +25,7 @@ namespace GhoulWorkAble
         public static List<bool> GeneLimitPreset = new List<bool> { true, true, false };
         public static List<bool> FoodLimitPreset = new List<bool> { true, true, true };
         //WorkTags.AllWork &~WorkTags.Violent is origin code
-        public static List<WorkTags> DisableWorkTagsPreset = new List<WorkTags> { WorkTags.AllWork&~WorkTags.Violent,
+        public static List<WorkTags> DisableWorkTagsPreset = new List<WorkTags> { WorkTags.Shooting | WorkTags.AllWork,
             WorkTags.Intellectual| WorkTags.Caring| WorkTags.Social|WorkTags.Cooking|WorkTags.Shooting|WorkTags.Artistic
             |WorkTags.Crafting|WorkTags.Firefighting,
             WorkTags.None };
@@ -41,11 +42,13 @@ namespace GhoulWorkAble
             {nameof(PsyRate) ,"PsychicSensitivity"}
         };
         public float hungryRatePercent = defaultMaxHungryPercent;
+        public bool enableRPGTabPatch = true;
         public override void ExposeData()
         {
 
             base.ExposeData();
             Scribe_Values.Look(ref disableWorkTags, nameof(disableWorkTags), DisableWorkTagsPreset[1]);
+            Scribe_Values.Look(ref foodLimit, nameof(foodLimit), FoodLimitPreset[1]);
             // can't parse list into values ,so need to get locally
             //Scribe_Values.Look(ref enabledWorkTypes, nameof(enabledWorkTypes), getEnableWorkTypes(DisableWorkTagsPreset[1]));
             Scribe_Values.Look(ref hungryRatePercent, nameof(hungryRatePercent), defaultMaxHungryPercent);
@@ -54,11 +57,16 @@ namespace GhoulWorkAble
             Scribe_Values.Look(ref ablityLimit, nameof(ablityLimit), AblityLimitPreset[1]);
             Scribe_Values.Look(ref PsyRate, nameof(PsyRate), PsyRatePreset[1]);
             Scribe_Values.Look(ref geneLimit, nameof(geneLimit), GeneLimitPreset[1]);
+            Scribe_Values.Look(ref enableRPGTabPatch, nameof(enableRPGTabPatch), true);
         }
         public void notifyAllDefChange()
         {
             notifyMutantDefChange();
             notifyHediffDefChange();
+        }
+        public void generateModComplier()
+        {
+            enableRPGTabPatch = OtherModPatches.IsRPGTabEnabled();
         }
         public void notifyHediffDefChange()
         {
@@ -88,6 +96,10 @@ namespace GhoulWorkAble
             //work
             def.workDisables = disableWorkTags;
             def.cachedDisabledWorkTypes = getEnableWorkTypes(disableWorkTags);
+            if (!foodLimit)
+            {
+                def.foodType = DefDatabase<ThingDef>.GetNamed(HumanDefName).race.foodType;
+            }
             // ideo and etc 
             if (!geneLimit)
             {

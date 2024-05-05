@@ -18,6 +18,10 @@
 	<HumanlikeGhoul_StatsPageInfo>注意:所有本界面的改动需要点击按钮来采用改动!</HumanlikeGhoul_StatsPageInfo>
 	<HumanlikeGhoul_AllowWorkType>允许工作类型</HumanlikeGhoul_AllowWorkType>
 	<HumanlikeGhoul_DisAllowWorkType>禁止工作类型</HumanlikeGhoul_DisAllowWorkType>
+	<HumanlikeGhoul_Setting_OtherModPage>兼容</HumanlikeGhoul_Setting_OtherModPage>
+	<HumanlikeGhoul_OtherModsPageInfo>本界面展示了一些可能影响食尸鬼功能的模组,以及他们的修复补丁,如果您在启用相关模组时未发现对应补丁启用,请向我联系</HumanlikeGhoul_OtherModsPageInfo>
+	<HumanlikeGhoul_RPGTabEnable>RPG装备栏补丁</HumanlikeGhoul_RPGTabEnable>
+	<HumanlikeGhoul_RPGTabEnableToolTip>防止使用RPG装备栏时无法卸载装备</HumanlikeGhoul_RPGTabEnableToolTip>
 	<HumanlikeGhoul_AddDisableWorkTab>禁止 </HumanlikeGhoul_AddDisableWorkTab>
 	<HumanlikeGhoul_RemoveDisableWorkTab>允许 </HumanlikeGhoul_RemoveDisableWorkTab>
 	<HuamnlikeGhoul_IdeoLimit>文化限制</HuamnlikeGhoul_IdeoLimit>
@@ -29,6 +33,8 @@
 	<HuamnlikeGhoul_GeneLimitToolTip>如果设置为否 ,食尸鬼能够使用一些如血原化,死眠等原本被禁止的基因(基因能力需要通过调整能力限制设置生效)</HuamnlikeGhoul_GeneLimitToolTip>
 	<HuamnlikeGhoul_AblityLimit>能力限制</HuamnlikeGhoul_AblityLimit>
 	<HuamnlikeGhoul_AblityLimitToolTip>如果设置为否 ,食尸鬼能够使用大部分能力而不是只有原本的食尸鬼植入物的能力(需要重启游戏生效)</HuamnlikeGhoul_AblityLimitToolTip>
+	<HuamnlikeGhoul_FoodLimit>食物限制</HuamnlikeGhoul_FoodLimit>
+	<HuamnlikeGhoul_FoodLimitToolTip>如果设置为否 ,食尸鬼将能够使用肉类以外的食物(需要重启游戏生效)</HuamnlikeGhoul_FoodLimitToolTip>
 	<HumanlikeGhoul_RenewDefButton>更新食尸鬼状态</HumanlikeGhoul_RenewDefButton>
 	<HumanlikeGhoul_HungryRateLable>最大饱食度</HumanlikeGhoul_HungryRateLable>
 	<HumanlikeGhoul_PsyRateLable>心灵敏感度</HumanlikeGhoul_PsyRateLable>

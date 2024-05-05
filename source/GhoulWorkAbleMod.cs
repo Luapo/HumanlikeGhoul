@@ -12,10 +12,12 @@ namespace GhoulWorkAble
     {
         private readonly GhoulWorkAbleSettings _settings;
         private int index = 0;
-        private static List<String> PageString=["HumanlikeGhoul_Setting_MainPage", "HumanlikeGhoul_Setting_WorkPage", "HumanlikeGhoul_Setting_StatsPage"];
+        private static List<String> PageString=["HumanlikeGhoul_Setting_MainPage", "HumanlikeGhoul_Setting_WorkPage", "HumanlikeGhoul_Setting_StatsPage",
+        "HumanlikeGhoul_Setting_OtherModPage"];
         public GhoulWorkAbleMod(ModContentPack content) : base(content)
         {
             _settings = GetSettings<GhoulWorkAbleSettings>();
+            //_settings.generateModComplier();
             index = 0;
         }
         public void DoSettingsWindowContentsWork(Rect inRect)
@@ -86,6 +88,8 @@ namespace GhoulWorkAble
             listing_Standard.CheckboxLabeled("HuamnlikeGhoul_GeneLimit".Translate(), ref _settings.geneLimit, "HuamnlikeGhoul_GeneLimitToolTip".Translate());
             listing_Standard.Gap(5f);
             listing_Standard.CheckboxLabeled("HuamnlikeGhoul_AblityLimit".Translate(), ref _settings.ablityLimit, "HuamnlikeGhoul_AblityLimitToolTip".Translate());
+            listing_Standard.Gap(5f);
+            listing_Standard.CheckboxLabeled("HuamnlikeGhoul_FoodLimit".Translate(), ref _settings.foodLimit, "HuamnlikeGhoul_FoodLimitToolTip".Translate());
             listing_Standard.End();
         }
         public void DoSettingsWindowContentsStats(Rect inRect)
@@ -100,6 +104,15 @@ namespace GhoulWorkAble
                 _settings.notifyAllDefChange();
             }
         }
+        public void DoSettingsWindowOtherMods(Rect inRect)
+        {
+            Widgets.Label(inRect with { y = inRect.y, height = 24 }, "HumanlikeGhoul_OtherModsPageInfo".Translate());
+            Listing_Standard listing_Standard = new Listing_Standard();
+            listing_Standard.Begin(inRect with { y=inRect.y+30});
+            listing_Standard.Gap(5f);
+            listing_Standard.CheckboxLabeled("HumanlikeGhoul_RPGTabEnable".Translate(), ref _settings.enableRPGTabPatch, "HumanlikeGhoul_RPGTabEnableToolTip".Translate());
+            listing_Standard.End();
+        }
         public void DoSelectPage(Rect inRect,int index)
         {
             //can use list
@@ -113,6 +126,10 @@ namespace GhoulWorkAble
             if (index == 2)
             {
                 DoSettingsWindowContentsStats(inRect);
+            }
+            if (index == 3)
+            {
+                DoSettingsWindowOtherMods(inRect);
             }
         }
         public override void DoSettingsWindowContents(Rect inRect)

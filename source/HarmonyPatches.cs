@@ -1,29 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Printing;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Runtime;
-using System.Text;
-using System.Threading.Tasks;
 using HarmonyLib;
 using RimWorld;
-using RimWorld.BaseGen;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using static HarmonyLib.Code;
-using System.Linq.Expressions;
 using System.Reflection.Emit;
-using UnityEngine.XR;
-using System.Net;
-using NAudio.CoreAudioApi;
 using Verse.AI.Group;
 using static RimWorld.PsychicRitualRoleDef;
-using System.Security.Cryptography;
-using static Mono.Security.X509.X520;
-using System.Net.NetworkInformation;
+using UnityEngine.UIElements;
 
 namespace GhoulWorkAble
 {
@@ -40,7 +27,6 @@ namespace GhoulWorkAble
             // need to move to other 
             //change ghoul def
             // may cause peformance problem.
-            // new Type[]{ typeof(Pawn), typeof(MutantDef), typeof(RotStage) }
             harmony.Patch(original: AccessTools.Method(typeof(Pawn), nameof(Pawn.GetDisabledWorkTypes)),
                prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_MutantTrackerDef_PreFix)));
             //AI work
@@ -64,21 +50,9 @@ namespace GhoulWorkAble
             harmony.Patch(original: AccessTools.Method(typeof(FloatMenuMakerMap), nameof(FloatMenuMakerMap.AddMutantOrders)),
                prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(AddMutantOrders_PreFix)));
             // remove humanorder food option
-            //harmony.Patch(original: AccessTools.Method(typeof(RaceProperties), nameof(RaceProperties.CanEverEat),new Type[] { typeof(ThingDef) }),
-            //prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(AddMutantOrders_PreFix)));
+            harmony.Patch(original: AccessTools.Method(typeof(FloatMenuMakerMap), nameof(FloatMenuMakerMap.AddHumanlikeOrders)),
+            transpiler: new HarmonyMethod(typeof(HarmonyPatches), nameof(AddHumanOrderFood_Transpiler)));
             // adjust pawn gear 
-            /*
-            if (ModsConfig.ActiveModsInLoadOrder.Any(m=>m.Name== "RPG Style Invent"||m.Name== "RPG Style Inventory Revamped"))
-            {
-                String packageName = "Sandy_Detailed_RPG_Inventory";
-                String typeName = "Sandy_Detailed_RPG_GearTab";
-                String priorityName = "CanControlColonist";
-                Type Sandy_Detailed_RPG_GearTab = GenTypes.GetTypeInAnyAssembly("Sandy_Detailed_RPG_Inventory.Sandy_Detailed_RPG_GearTab");
-                Verse.Log.Message("Try to get"+Sandy_Detailed_RPG_GearTab);
-                harmony.Patch(original:Sandy_Detailed_RPG_GearTab.GetProperty("Sandy_Detailed_RPG_Inventory.Sandy_Detailed_RPG_GearTab.CanControlColonist", AccessTools.all).GetGetMethod(),
-                postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CanControlColonist_PostFix)));
-            }
-            */
             harmony.Patch(original: AccessTools.FirstMethod(typeof(EquipmentUtility), CanEquip_Search),
             postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CanEquip_PostFix)));
 
@@ -117,21 +91,23 @@ namespace GhoulWorkAble
         static IEnumerable<CodeInstruction> AddHumanOrderFood_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             /*
-             * 	    IL_0388: dup
-				    IL_0389: brtrue.s IL_038f
-				    IL_038b: pop
-				    IL_038c: ldnull
-				    IL_038d: br.s IL_0394
-                    IL_038f: ldfld class RimWorld.Need_Food RimWorld.Pawn_NeedsTracker::food
-                    IL_0394: brfalse IL_0865
+			    IL_03ca: ldloc.s 14
+			    IL_03cc: ldfld class RimWorld.FloatMenuMakerMap/'<>c__DisplayClass12_0' RimWorld.FloatMenuMakerMap/'<>c__DisplayClass12_2'::'CS$<>8__locals2'
+			    IL_03d1: ldfld class Verse.Pawn RimWorld.FloatMenuMakerMap/'<>c__DisplayClass12_0'::pawn
+			    IL_03d6: callvirt instance class Verse.RaceProperties Verse.Pawn::get_RaceProps()
+			    IL_03db: ldloc.s 14
+			    IL_03dd: ldfld class Verse.Thing RimWorld.FloatMenuMakerMap/'<>c__DisplayClass12_2'::t
+			    IL_03e2: callvirt instance bool Verse.RaceProperties::CanEverEat(class Verse.Thing)
+			    IL_03e7: brfalse IL_0865
              */
-            // (RimWorld.Need_Food||IsMutant)
+            // (pawn.RaceProperites.canevereat&&!IsMutantPlayerControl)
             var found = false;
-            CodeInstruction prevInstruction = null;
-            var targetMethod = AccessTools.PropertyGetter(typeof(Pawn), nameof(Pawn_NeedsTracker.food));
+            Queue<CodeInstruction> prevInstruction = new Queue<CodeInstruction> { };
+            var targetMethod = AccessTools.Method(typeof(RaceProperties), nameof(RaceProperties.CanEverEat),
+                new Type[] { typeof(Thing) });
             if (targetMethod == null)
             {
-                Verse.Log.Message("GhoulWorkAble failed to reflect ideo method." + Environment.StackTrace);
+                Verse.Log.Message("GhoulWorkAble failed to humanOrder food." + Environment.StackTrace);
             }
             foreach (var instruction in instructions)
             {
@@ -140,21 +116,33 @@ namespace GhoulWorkAble
                 {
                     //Verse.Log.Message("found " + instruction);
                     //put the pawn address backup
-                    yield return new CodeInstruction(OpCodes.Dup);
                     yield return instruction;
-                    yield return prevInstruction;
+                    /*
+                        IL_03ca: ldloc.s 14
+			            IL_03cc: ldfld class RimWorld.FloatMenuMakerMap/'<>c__DisplayClass12_0' RimWorld.FloatMenuMakerMap/'<>c__DisplayClass12_2'::'CS$<>8__locals2'
+			            IL_03d1: ldfld class Verse.Pawn RimWorld.FloatMenuMakerMap/'<>c__DisplayClass12_0'::pawn
+                    */
+                    for (int i = 0; i < 3; i++)
+                    {
+                        yield return prevInstruction.Dequeue();
+                    }
                     // get is Colony Mutant
                     yield return new CodeInstruction(OpCodes.Callvirt,
                         AccessTools.PropertyGetter(typeof(Pawn), nameof(Pawn.IsColonyMutantPlayerControlled)));
                     // out result
-                    yield return new CodeInstruction(OpCodes.Or);
+                    yield return new CodeInstruction(OpCodes.Ldc_I4_1);
+                    yield return new CodeInstruction(OpCodes.Xor);
+                    yield return new CodeInstruction(OpCodes.And);
                     found = true;
                 }
                 else yield return instruction;
-                prevInstruction = instruction;
+                prevInstruction.Enqueue(instruction);
+                if (prevInstruction.Count > 6){
+                    prevInstruction.Dequeue();
+                }
             }
             if (found is false)
-                Verse.Log.Message("GhoulWorkAble failed to reflect ideo role." + Environment.StackTrace);
+                Verse.Log.Message("GhoulWorkAble failed to humanOrder food." + Environment.StackTrace);
         }
         static bool CanEquip_Search(MethodInfo method)
         {
@@ -162,7 +150,6 @@ namespace GhoulWorkAble
         }
         static void CanEquip_PostFix(ref bool __result, Pawn pawn,ref string cantReason)
         {
-            Verse.Log.Message("try find pawn wear");
             if (__result && pawn.IsColonyMutantPlayerControlled&&!Settings.allowEquipment)
             {
                 cantReason = "HumanLikeGhoul_CantWearCause".Translate();
@@ -176,8 +163,8 @@ namespace GhoulWorkAble
 		            IL_0016: callvirt instance bool Verse.Pawn::get_IsFreeNonSlaveColonist()
 		            IL_001b: brtrue.s IL_001f
              */
-            // (IsFreeNonSlaveColonist||isMutantPlayerControl)
-            var found = false;
+                    // (IsFreeNonSlaveColonist||isMutantPlayerControl)
+                    var found = false;
             CodeInstruction prevInstruction = null;
             var targetMethod = AccessTools.PropertyGetter(typeof(Pawn), nameof(Pawn.IsFreeNonSlaveColonist));
             if (targetMethod == null)
