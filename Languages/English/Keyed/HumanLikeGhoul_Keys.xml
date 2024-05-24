@@ -5,10 +5,11 @@
 	<HumanlikeGhoul_ResetWarring>Note: this will change WorkPage content also! Most config need reload save to get work</HumanlikeGhoul_ResetWarring>
 	<HumanlikeGhoul_ResetNone>Reset to Origin</HumanlikeGhoul_ResetNone>
 	<HumanlikeGhoul_ResetNoneTooltip>Recommend to see what origin ghoul setting,most of mod feature will fail when this work</HumanlikeGhoul_ResetNoneTooltip>
+	<HumanlikeGhoul_ResetDumbLabor>Reset to Dumb Labor</HumanlikeGhoul_ResetDumbLabor>
 	<HumanlikeGhoul_ResetDefault>Reset to Default</HumanlikeGhoul_ResetDefault>
 	<HumanlikeGhoul_ResetDefaultTooltip>Author using setting,ghoul can do easy work and use melee armor</HumanlikeGhoul_ResetDefaultTooltip>
 	<HumanlikeGhoul_ResetAdvance>Reset to Advance</HumanlikeGhoul_ResetAdvance>
-	<HumanlikeGhoul_ResetAdvanceTooltip>Ghoul can do most things,you can even made a colony of ghoul only</HumanlikeGhoul_ResetAdvanceTooltip>
+	<HumanlikeGhoul_ResetAdvanceTooltip>Ghoul can do most things,use for build a colony of ghoul only</HumanlikeGhoul_ResetAdvanceTooltip>
 	<HumanlikeGhoul_Setting_MainPage>Main</HumanlikeGhoul_Setting_MainPage>
 	<HumanlikeGhoul_Setting_WorkPage>Work</HumanlikeGhoul_Setting_WorkPage>
 	<HumanlikeGhoul_Setting_StatsPage>Stats</HumanlikeGhoul_Setting_StatsPage>
@@ -16,9 +17,11 @@
 	<HumanlikeGhoul_AllowWorkType>Allow work tags</HumanlikeGhoul_AllowWorkType>
 	<HumanlikeGhoul_DisAllowWorkType>Disable work tags</HumanlikeGhoul_DisAllowWorkType>
 	<HumanlikeGhoul_Setting_OtherModPage>Compatibility</HumanlikeGhoul_Setting_OtherModPage>
-	<HumanlikeGhoul_OtherModsPageInfo>This page show fix patch to which mod may cause feature lost while using ghoul,if you use mod in list and don't found the fixing on,contract to me</HumanlikeGhoul_OtherModsPageInfo>
+	<HumanlikeGhoul_OtherModsPageInfo>This page show fix patch to mod may cause feature lost,if you use mod in list but don't found the fixing on,contract mod Team</HumanlikeGhoul_OtherModsPageInfo>
 	<HumanlikeGhoul_RPGTabEnable>Fixing RPG Style Inventory</HumanlikeGhoul_RPGTabEnable>
 	<HumanlikeGhoul_RPGTabEnableToolTip>Allow to unequip gear when using RPG Style Inventory</HumanlikeGhoul_RPGTabEnableToolTip>
+	<HumanlikeGhoul_WorkTabEnable>Fixing Fluffy’s Work Tab</HumanlikeGhoul_WorkTabEnable>
+	<HumanlikeGhoul_WorkTabEnableToolTip>Add ghouls to Work Tab</HumanlikeGhoul_WorkTabEnableToolTip>
 	<HumanlikeGhoul_AddDisableWorkTab>Disable </HumanlikeGhoul_AddDisableWorkTab>
 	<HumanlikeGhoul_RemoveDisableWorkTab>Alow </HumanlikeGhoul_RemoveDisableWorkTab>
 	<HuamnlikeGhoul_IdeoLimit>Ideo Limit</HuamnlikeGhoul_IdeoLimit>

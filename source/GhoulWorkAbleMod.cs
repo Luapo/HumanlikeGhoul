@@ -71,6 +71,11 @@ namespace GhoulWorkAble
                 _settings.resetNoneSetting();
             }
             listing_Standard.Gap(5f);
+            if (listing_Standard.ButtonText("HumanlikeGhoul_ResetDumbLabor".Translate()))
+            {
+                _settings.resetDumbLaborSetting();
+            }
+            listing_Standard.Gap(5f);
             if (listing_Standard.ButtonText("HumanlikeGhoul_ResetDefault".Translate()))
             {
                 _settings.resetDefaultSetting();
@@ -111,6 +116,8 @@ namespace GhoulWorkAble
             listing_Standard.Begin(inRect with { y=inRect.y+30});
             listing_Standard.Gap(5f);
             listing_Standard.CheckboxLabeled("HumanlikeGhoul_RPGTabEnable".Translate(), ref _settings.enableRPGTabPatch, "HumanlikeGhoul_RPGTabEnableToolTip".Translate());
+            listing_Standard.Gap(5f);
+            listing_Standard.CheckboxLabeled("HumanlikeGhoul_WorkTabEnable".Translate(), ref _settings.enableWorkTabPatch, "HumanlikeGhoul_WorkTabEnableToolTip".Translate());
             listing_Standard.End();
         }
         public void DoSelectPage(Rect inRect,int index)

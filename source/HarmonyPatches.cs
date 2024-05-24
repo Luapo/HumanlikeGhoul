@@ -100,7 +100,7 @@ namespace GhoulWorkAble
 			    IL_03e2: callvirt instance bool Verse.RaceProperties::CanEverEat(class Verse.Thing)
 			    IL_03e7: brfalse IL_0865
              */
-            // (pawn.RaceProperites.canevereat&&!IsMutantPlayerControl)
+            // (pawn.RaceProperites.canEverEat&&!IsMutantPlayerControl)
             var found = false;
             Queue<CodeInstruction> prevInstruction = new Queue<CodeInstruction> { };
             var targetMethod = AccessTools.Method(typeof(RaceProperties), nameof(RaceProperties.CanEverEat),
@@ -164,7 +164,7 @@ namespace GhoulWorkAble
 		            IL_001b: brtrue.s IL_001f
              */
                     // (IsFreeNonSlaveColonist||isMutantPlayerControl)
-                    var found = false;
+            var found = false;
             CodeInstruction prevInstruction = null;
             var targetMethod = AccessTools.PropertyGetter(typeof(Pawn), nameof(Pawn.IsFreeNonSlaveColonist));
             if (targetMethod == null)
@@ -228,7 +228,6 @@ namespace GhoulWorkAble
             Settings.notifyMutantDefChange();
         }
         //need be move to somewhere for auto load
-
         static IEnumerable<CodeInstruction> DrawPawnRoleSelection_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             /*
@@ -357,15 +356,15 @@ namespace GhoulWorkAble
             if (found is false)
                 Verse.Log.Message("GhoulWorkAble failed to reflect ideo role." + Environment.StackTrace);
         }
-        static void MainTabWindow_Work_pawns_PostFix(ref IEnumerable<Pawn> __result)
+        public static void MainTabWindow_Work_pawns_PostFix(ref IEnumerable<Pawn> __result)
         {
             __result = __result.Concat(Find.CurrentMap.mapPawns.ColonyMutants);
         }
-        static void CanControlColonist_PostFix(ref bool __result, ITab_Pawn_Gear __instance)
+        public static void CanControlColonist_PostFix(ref bool __result, ITab_Pawn_Gear __instance)
         {
             __result = __result || (__instance.CanControl && __instance.SelPawnForGear.IsColonyMutantPlayerControlled);
         }
-        private static void AddMutantOrders_PreFix(Vector3 clickPos, Pawn pawn, List<FloatMenuOption> opts)
+        public static void AddMutantOrders_PreFix(Vector3 clickPos, Pawn pawn, List<FloatMenuOption> opts)
         {
             //Verse.Log.Message("ghoulworkable" + GhoulWorkAbleUtil.IsGhoul(pawn)+","+pawn.IsGhoul+","+pawn.IsColonyMutantPlayerControlled);
             if (!GhoulWorkAbleUtil.IsGhoul(pawn)) return;

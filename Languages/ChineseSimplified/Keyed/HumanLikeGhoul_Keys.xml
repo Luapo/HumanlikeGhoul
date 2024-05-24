@@ -10,6 +10,7 @@
 	<HumanlikeGhoul_ResetNoneTooltip>Recommend to see what origin ghoul setting,most of mod feature will fail when this work</HumanlikeGhoul_ResetNoneTooltip>
 	<HumanlikeGhoul_ResetDefault>重置为默认</HumanlikeGhoul_ResetDefault>
 	<HumanlikeGhoul_ResetDefaultTooltip>Author using setting,ghoul can do easy work and use melee armor</HumanlikeGhoul_ResetDefaultTooltip>
+	<HumanlikeGhoul_ResetDumbLabor>重置为简易工作</HumanlikeGhoul_ResetDumbLabor>
 	<HumanlikeGhoul_ResetAdvance>重置为先进</HumanlikeGhoul_ResetAdvance>
 	<HumanlikeGhoul_ResetAdvanceTooltip>Ghoul can do most things,you can even made a colony of ghoul only</HumanlikeGhoul_ResetAdvanceTooltip>
 	<HumanlikeGhoul_Setting_MainPage>主要</HumanlikeGhoul_Setting_MainPage>
@@ -19,9 +20,11 @@
 	<HumanlikeGhoul_AllowWorkType>允许工作类型</HumanlikeGhoul_AllowWorkType>
 	<HumanlikeGhoul_DisAllowWorkType>禁止工作类型</HumanlikeGhoul_DisAllowWorkType>
 	<HumanlikeGhoul_Setting_OtherModPage>兼容</HumanlikeGhoul_Setting_OtherModPage>
-	<HumanlikeGhoul_OtherModsPageInfo>本界面展示了一些可能影响食尸鬼功能的模组,以及他们的修复补丁,如果您在启用相关模组时未发现对应补丁启用,请向我联系</HumanlikeGhoul_OtherModsPageInfo>
+	<HumanlikeGhoul_OtherModsPageInfo>本界面展示了一些可能造成功能冲突的模组及对应的修复补丁,如果您在启用相关模组时未发现对应补丁生效,请与我联系</HumanlikeGhoul_OtherModsPageInfo>
 	<HumanlikeGhoul_RPGTabEnable>RPG装备栏补丁</HumanlikeGhoul_RPGTabEnable>
 	<HumanlikeGhoul_RPGTabEnableToolTip>防止使用RPG装备栏时无法卸载装备</HumanlikeGhoul_RPGTabEnableToolTip>
+	<HumanlikeGhoul_WorkTabEnable>Fluffy Work Tab补丁</HumanlikeGhoul_WorkTabEnable>
+	<HumanlikeGhoul_WorkTabEnableToolTip>添加食尸鬼到对应工作栏中</HumanlikeGhoul_WorkTabEnableToolTip>
 	<HumanlikeGhoul_AddDisableWorkTab>禁止 </HumanlikeGhoul_AddDisableWorkTab>
 	<HumanlikeGhoul_RemoveDisableWorkTab>允许 </HumanlikeGhoul_RemoveDisableWorkTab>
 	<HuamnlikeGhoul_IdeoLimit>文化限制</HuamnlikeGhoul_IdeoLimit>

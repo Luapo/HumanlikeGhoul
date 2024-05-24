@@ -16,26 +16,27 @@ namespace GhoulWorkAble
         //2:can do most work human can do,the advance choice;
         public static string GhoulDefName="Ghoul";
         public static string HumanDefName = "Human";
-        public static List<float> PsyRatePreset = new List<float> {0f,0f,0.1f };
+        public static List<float> PsyRatePreset = new List<float> {0f,0f,0f,0.1f };
         // useless stat,mainly for test
         public static float defaultMaxHungryPercent = 2f;
-        public static List<bool> AllowEquipmentPreset = new List<bool> { false, false, true };
-        public static List<bool> AllowIdeoPreset = new List<bool> { false, false, true };
-        public static List<bool> AblityLimitPreset = new List<bool> { true, true, false };
-        public static List<bool> GeneLimitPreset = new List<bool> { true, true, false };
-        public static List<bool> FoodLimitPreset = new List<bool> { true, true, true };
+        public static List<bool> AllowEquipmentPreset = new List<bool> { false, false, false, true };
+        public static List<bool> AllowIdeoPreset = new List<bool> { false, false, false, true };
+        public static List<bool> AblityLimitPreset = new List<bool> { true, true, true, false };
+        public static List<bool> GeneLimitPreset = new List<bool> { true, true, true, false };
+        public static List<bool> FoodLimitPreset = new List<bool> { true, true, true, true };
         //WorkTags.AllWork &~WorkTags.Violent is origin code
         public static List<WorkTags> DisableWorkTagsPreset = new List<WorkTags> { WorkTags.Shooting | WorkTags.AllWork,
+            WorkTags.Shooting | WorkTags.ManualSkilled|WorkTags.Intellectual| WorkTags.Caring| WorkTags.Social|WorkTags.Artistic|WorkTags.Animals,
             WorkTags.Intellectual| WorkTags.Caring| WorkTags.Social|WorkTags.Cooking|WorkTags.Shooting|WorkTags.Artistic
-            |WorkTags.Crafting|WorkTags.Firefighting,
+            |WorkTags.Crafting,
             WorkTags.None };
-        public WorkTags disableWorkTags = DisableWorkTagsPreset[1];
-        public float PsyRate = PsyRatePreset[1];
-        public bool allowIdeo = AllowIdeoPreset[1];
-        public bool allowEquipment = AllowEquipmentPreset[1];
-        public bool ablityLimit = AblityLimitPreset[1];
-        public bool geneLimit = GeneLimitPreset[1];
-        public bool foodLimit = FoodLimitPreset[1];
+        public WorkTags disableWorkTags = DisableWorkTagsPreset[2];
+        public float PsyRate = PsyRatePreset[2];
+        public bool allowIdeo = AllowIdeoPreset[2];
+        public bool allowEquipment = AllowEquipmentPreset[2];
+        public bool ablityLimit = AblityLimitPreset[2];
+        public bool geneLimit = GeneLimitPreset[2];
+        public bool foodLimit = FoodLimitPreset[2];
         // test,no use now
         public Dictionary<string, string> defDic = new Dictionary<string, string> {
             {nameof(defaultMaxHungryPercent) ,"MaxNutrition"},
@@ -43,21 +44,23 @@ namespace GhoulWorkAble
         };
         public float hungryRatePercent = defaultMaxHungryPercent;
         public bool enableRPGTabPatch = true;
+        public bool enableWorkTabPatch = true;
         public override void ExposeData()
         {
 
             base.ExposeData();
-            Scribe_Values.Look(ref disableWorkTags, nameof(disableWorkTags), DisableWorkTagsPreset[1]);
-            Scribe_Values.Look(ref foodLimit, nameof(foodLimit), FoodLimitPreset[1]);
+            Scribe_Values.Look(ref disableWorkTags, nameof(disableWorkTags), DisableWorkTagsPreset[2]);
+            Scribe_Values.Look(ref foodLimit, nameof(foodLimit), FoodLimitPreset[2]);
             // can't parse list into values ,so need to get locally
             //Scribe_Values.Look(ref enabledWorkTypes, nameof(enabledWorkTypes), getEnableWorkTypes(DisableWorkTagsPreset[1]));
             Scribe_Values.Look(ref hungryRatePercent, nameof(hungryRatePercent), defaultMaxHungryPercent);
-            Scribe_Values.Look(ref allowIdeo, nameof(allowIdeo), AllowIdeoPreset[1]);
-            Scribe_Values.Look(ref allowEquipment, nameof(allowEquipment), AllowEquipmentPreset[1]);
-            Scribe_Values.Look(ref ablityLimit, nameof(ablityLimit), AblityLimitPreset[1]);
-            Scribe_Values.Look(ref PsyRate, nameof(PsyRate), PsyRatePreset[1]);
-            Scribe_Values.Look(ref geneLimit, nameof(geneLimit), GeneLimitPreset[1]);
+            Scribe_Values.Look(ref allowIdeo, nameof(allowIdeo), AllowIdeoPreset[2]);
+            Scribe_Values.Look(ref allowEquipment, nameof(allowEquipment), AllowEquipmentPreset[2]);
+            Scribe_Values.Look(ref ablityLimit, nameof(ablityLimit), AblityLimitPreset[2]);
+            Scribe_Values.Look(ref PsyRate, nameof(PsyRate), PsyRatePreset[2]);
+            Scribe_Values.Look(ref geneLimit, nameof(geneLimit), GeneLimitPreset[2]);
             Scribe_Values.Look(ref enableRPGTabPatch, nameof(enableRPGTabPatch), true);
+            Scribe_Values.Look(ref enableWorkTabPatch, nameof(enableWorkTabPatch), true);
         }
         public void notifyAllDefChange()
         {
@@ -152,15 +155,19 @@ namespace GhoulWorkAble
         }
         public void resetDefaultSetting()
         {
-            resetSettingIndex(1);
+            resetSettingIndex(2);
         }
         public void resetNoneSetting()
         {
             resetSettingIndex(0);
         }
+        public void resetDumbLaborSetting()
+        {
+            resetSettingIndex(1);
+        }
         public void resetAdvanceSetting()
         {
-            resetSettingIndex(2);
+            resetSettingIndex(3);
         }
     }
 }
