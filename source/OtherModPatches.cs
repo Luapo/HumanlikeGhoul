@@ -63,7 +63,7 @@ namespace GhoulWorkAble
         {
             if (__instance.GetType() == WorkTabType)
             {
-                __result = __result.Concat(Find.CurrentMap.mapPawns.ColonyMutants);
+                __result = __result.Concat(Find.CurrentMap.mapPawns.ColonyMutantsPlayerControlled);
             }
         }
     }

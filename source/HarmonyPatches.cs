@@ -200,17 +200,17 @@ namespace GhoulWorkAble
         }
         public static void PsychicRitualCandidatePool_AllCandidatePawns_Postfix(ref List<Pawn>__result)
         {
-            __result = (__result.Concat(Find.CurrentMap.mapPawns.ColonyMutants)).ToList();
+            __result = (__result.Concat(Find.CurrentMap.mapPawns.ColonyMutantsPlayerControlled)).ToList();
         }
         public static void RitualRoleAssignments_Setup_Prefix(ref List<Pawn> allPawns)
         {
             if (allPawns != null)
             {
-                allPawns=(allPawns.Concat(Find.CurrentMap.mapPawns.ColonyMutants)).ToList();
+                allPawns=(allPawns.Concat(Find.CurrentMap.mapPawns.ColonyMutantsPlayerControlled)).ToList();
             }
             else
             {
-                allPawns = Find.CurrentMap.mapPawns.ColonyMutants.ToList();
+                allPawns = Find.CurrentMap.mapPawns.ColonyMutantsPlayerControlled.ToList();
             }
         }
         static bool PawnNotAssignableReason_Search(MethodInfo method)
@@ -358,7 +358,7 @@ namespace GhoulWorkAble
         }
         public static void MainTabWindow_Work_pawns_PostFix(ref IEnumerable<Pawn> __result)
         {
-            __result = __result.Concat(Find.CurrentMap.mapPawns.ColonyMutants);
+            __result = __result.Concat(Find.CurrentMap.mapPawns.ColonyMutantsPlayerControlled);
         }
         public static void CanControlColonist_PostFix(ref bool __result, ITab_Pawn_Gear __instance)
         {
